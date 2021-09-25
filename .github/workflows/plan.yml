@@ -58,8 +58,8 @@ jobs:
 
       - name: Json format
         run: |
-          cat tfplan.json | jq '.'
-          # cat tfplan.json | jq '.' > tfplan-new.json
+          jq . tfplan.json
+          jq . tfplan.json > tfplan-new.json
 
       - name: Scan with Checkov
         run: |
