@@ -18,5 +18,5 @@ data "aws_ami" "ubuntu" {
 
 # Reference to the bucket destination for audit logs
 data "aws_s3_bucket" "audit_log_bucket" {
-  bucket = "audit-logging-bucket"
+  bucket = "aws-audit-logging-bucket"
 }
