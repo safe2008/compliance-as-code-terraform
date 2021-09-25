@@ -40,12 +40,6 @@ jobs:
           name: test-results
           path: checkov-report.xml
 
-      # - name: Publish Unit Test Results
-      #   uses: EnricoMi/publish-unit-test-result-action@v1.19
-      #   if: always()
-      #   with:
-      #     files: checkov-report.xml
-
 
   # build:
   #   runs-on: ubuntu-latest
