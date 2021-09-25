@@ -31,14 +31,8 @@ jobs:
           event_name: ${{ github.event.workflow_run.event }}
           files: "artifacts/**/*.xml"
 
-      - name: JUnit Report Action
-        uses: mikepenz/action-junit-report@v2.4.5
-        if: always() # always run even if the previous step fails
-        with:
-          report_paths: "artifacts/**/*.xml"
-      # - uses: dorny/test-reporter@v1
+      # - name: JUnit Report Action
+      #   uses: mikepenz/action-junit-report@v2.4.5
+      #   if: always() # always run even if the previous step fails
       #   with:
-      #     artifact: test-results            # artifact name
-      #     name: JUnit Tests                 # Name of the check run which will be created
-      #     path: '*.xml'                     # Path to test results (inside artifact .zip)
-      #     reporter: java-junit              # Format of test results
+      #     report_paths: "artifacts/**/*.xml"
