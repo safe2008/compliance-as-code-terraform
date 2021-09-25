@@ -1,0 +1,8 @@
+download-external-modules: true
+evaluate-variables: true
+external-modules-download-path:
+framework: all
+output: cli
+skip-fixes: true
+soft-fail: true
+compact: true
