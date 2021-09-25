@@ -8,3 +8,4 @@ introduction/terraform.tfstate
 introduction/.terraform.tfstate.lock.info
 introduction/tfplan.binary
 introduction/tfplan.json
+introduction/tfplan-new.json

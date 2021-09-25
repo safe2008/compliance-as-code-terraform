@@ -58,8 +58,8 @@ jobs:
 
       - name: Scan with Checkov
         run: |
-          cat tfplan.json
-          checkov -f tfplan.json -o junitxml > checkov-report.xml
+          cat tfplan.json | jq > tfplan-new.json
+          checkov -f tfplan-new.json -o junitxml > checkov-report.xml
           
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
