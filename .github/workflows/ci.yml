@@ -71,6 +71,7 @@ jobs:
 
       - name: Terraform
         run: |
+          cd ${{ github.event.inputs.directory }}
           terraform init
           terraform plan --out tfplan.binary
           terraform show -json tfplan.binary > tfplan.json
