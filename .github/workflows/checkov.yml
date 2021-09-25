@@ -1,0 +1,59 @@
+name: checkov
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+  workflow_dispatch:
+    inputs:
+      directory:
+        description: "directory"
+        required: true
+        default: "introduction"
+
+jobs:
+  checkov:
+    name: checkov
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+      - uses: actions/checkout@v2.3.4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Test with Checkov
+        run: |
+          pip install checkov
+          checkov -d webapp -o junitxml > checkov-report.xml
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.19
+        if: always()
+        with:
+          files: checkov-report.xml
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 3.8
+      - name: Test with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@v12.641.0
+        with:
+          directory: webapp
+          framework: terraform 
+          output_format: junitxml
+
+      - name: Test with Checkov
+        run: |
+          ls -la
