@@ -1,4 +1,4 @@
-name: 'CI'
+name: 'PLAN'
 on:
   # pull_request:
   #   paths-ignore: [ '**.md' ]
@@ -14,8 +14,8 @@ on:
         default: "introduction"
 
 jobs:
-  build-test:
-    name: Build & Test
+  plan-scan:
+    name: Plan scan
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,16 +23,37 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Checkov version
+        run: checkov -v
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 1.0.5
+
       - name: Scan with Checkov
         run: |
-          pip install checkov
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
-
+          cd ${{ github.event.inputs.directory }}
+          terraform init
+          terraform plan --out tfplan.binary
+          terraform show -json tfplan.binary > tfplan.json
+          checkov -f tfplan.json -o junitxml > checkov-report.xml
+          
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
