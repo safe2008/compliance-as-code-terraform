@@ -28,10 +28,14 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Checkov version
+        run: checkov -v
+
       - name: Scan with Checkov
-        run: |
-          pip install checkov
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
+        run: checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
 
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
