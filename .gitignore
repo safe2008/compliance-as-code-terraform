@@ -4,3 +4,7 @@ checkov-report.xml
 .talismanrc
 .terraform
 .terraform.lock.hcl
+introduction/terraform.tfstate
+introduction/.terraform.tfstate.lock.info
+introduction/tfplan.binary
+introduction/tfplan.json
