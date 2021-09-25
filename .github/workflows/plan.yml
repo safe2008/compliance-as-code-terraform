@@ -56,9 +56,13 @@ jobs:
         id: show
         run: terraform show -json tfplan.binary > tfplan.json
 
+      - name: Json format
+        run: |
+          ls -la tfplan.json
+          cat tfplan.json | jq > tfplan-new.json
+
       - name: Scan with Checkov
         run: |
-          cat tfplan.json | jq > tfplan-new.json
           checkov -f tfplan-new.json -o junitxml > checkov-report.xml
           
       - name: Upload results
