@@ -2,3 +2,5 @@
 .external_modules
 checkov-report.xml
 .talismanrc
+.terraform
+.terraform.lock.hcl

@@ -31,55 +31,51 @@ jobs:
       - name: Scan with Checkov
         run: |
           pip install checkov
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
+          checkov -d ${{ github.event.inputs.directory }} --output json --soft-fail --download-external-modules true  --framework terraform > checkov-report.xml
 
-      - name: Test results
+      - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
           name: test-results
           path: checkov-report.xml
 
-  checkov-job:
-    runs-on: ubuntu-latest
-    name: checkov-action
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@master
+  # checkov-job:
+  #   runs-on: ubuntu-latest
+  #   name: checkov-action
+  #   steps:
+  #     - name: Checkout repo
+  #       uses: actions/checkout@master
 
-      - name: Run Checkov action
-        id: checkov
-        uses: bridgecrewio/checkov-action@master
-        with:
-          directory: ${{ github.event.inputs.directory }}/
-          # check: CKV_AWS_1 # optional: run only a specific check_id. can be comma separated list
-          # skip_check: CKV_AWS_1 # optional: skip a specific check_id. can be comma separated list
-          # quiet: true # optional: display only failed checks
-          soft_fail: true # optional: do not return an error code if there are failed checks
-          framework: terraform # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
-          output_format: junitxml # optional: the output format, one of: cli, json, junitxml, github_failed_only
-          download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
-
-      - name: LS
-        run: |
-          ls -la
+  #     - name: Run Checkov action
+  #       id: checkov
+  #       uses: bridgecrewio/checkov-action@master
+  #       with:
+  #         directory: ${{ github.event.inputs.directory }}/
+  #         # check: CKV_AWS_1 # optional: run only a specific check_id. can be comma separated list
+  #         # skip_check: CKV_AWS_1 # optional: skip a specific check_id. can be comma separated list
+  #         # quiet: true # optional: display only failed checks
+  #         soft_fail: true # optional: do not return an error code if there are failed checks
+  #         framework: terraform # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
+  #         output_format: junitxml # optional: the output format, one of: cli, json, junitxml, github_failed_only
+  #         download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
 
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: 3.8
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2.3.4
+  #     - name: Set up Python 3.8
+  #       uses: actions/setup-python@v2.2.2
+  #       with:
+  #         python-version: 3.8
 
-      - name: Run Bridgecrew 
-        id: Bridgecrew
-        uses: bridgecrewio/bridgecrew-action@master
-        with:
-          api-key: ${{ secrets.BRIDGECREW_API_KEY }}
-          directory: ${{ github.event.inputs.directory }}
-          soft_fail: true
-          framework: terraform 
-          output_format: junitxml
+  #     - name: Run Bridgecrew 
+  #       id: Bridgecrew
+  #       uses: bridgecrewio/bridgecrew-action@master
+  #       with:
+  #         api-key: ${{ secrets.BRIDGECREW_API_KEY }}
+  #         directory: ${{ github.event.inputs.directory }}
+  #         soft_fail: true
+  #         framework: terraform 
+  #         output_format: junitxml
