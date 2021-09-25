@@ -14,8 +14,8 @@ on:
         default: "introduction"
 
 jobs:
-  build-test:
-    name: Build & Test
+  unit-test-scan:
+    name: Unit test scan
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -35,11 +35,52 @@ jobs:
         run: checkov -v
 
       - name: Scan with Checkov
-        run: checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
+        run: checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-unit-test.xml
 
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
           name: test-results
-          path: checkov-report.xml
+          path: checkov-unit-test.xml
+
+  plan-scan:
+    name: Plan scan
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+      - uses: actions/checkout@v2.3.4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Checkov version
+        run: checkov -v
+
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1.3.2
+        with:
+          terraform_version: 1.0.5
+
+      - name: Terraform
+        run: |
+          terraform init
+          terraform plan --out tfplan.binary
+          terraform show -json tfplan.binary > tfplan.json
+          
+      - name: Scan with Checkov
+        run: checkov -f tfplan.json -o junitxml > checkov-plan.xml
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2  # upload test results
+        if: success() || failure()        # run this step even if previous step failed
+        with:
+          name: plan-results
+          path: checkov-plan.xml
