@@ -4,7 +4,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-    
+
   workflow_dispatch:
     inputs:
       directory:
@@ -38,22 +38,22 @@ jobs:
         with:
           files: checkov-report.xml
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: 3.8
-      - name: Test with Checkov
-        id: checkov
-        uses: bridgecrewio/checkov-action@v12.641.0
-        with:
-          directory: webapp
-          framework: terraform 
-          output_format: junitxml
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2.3.4
+  #     - name: Set up Python 3.8
+  #       uses: actions/setup-python@v2.2.2
+  #       with:
+  #         python-version: 3.8
+  #     - name: Test with Checkov
+  #       id: checkov
+  #       uses: bridgecrewio/checkov-action@v12.641.0
+  #       with:
+  #         directory: webapp
+  #         framework: terraform 
+  #         output_format: junitxml
 
-      - name: Test with Checkov
-        run: |
-          ls -la
+  #     - name: Test with Checkov
+  #       run: |
+  #         ls -la
