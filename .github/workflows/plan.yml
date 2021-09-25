@@ -1,9 +1,5 @@
 name: 'PLAN'
 on:
-  workflow_run:
-    workflows: ["CI Report"] # runs after CI Report workflow
-    types:
-      - completed
   workflow_dispatch:
     inputs:
       directory:
@@ -57,4 +53,4 @@ jobs:
         if: success() || failure()        # run this step even if previous step failed
         with:
           name: test-results
-          path: checkov-report.xml
+          path: ${{ github.event.inputs.directory }}/checkov-report.xml
