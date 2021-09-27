@@ -1,4 +1,4 @@
-name: 'PLAN'
+name: 'Plan'
 on:
   workflow_dispatch:
     inputs:
