@@ -56,14 +56,14 @@ jobs:
         id: show
         run: terraform show -json tfplan.binary > tfplan.json
 
-      - name: Json format
-        run: |
-          jq -c < tfplan.json > tfplanObj.json
-          jq . tfplanObj.json > tfplan-new.json
+      # - name: Json format
+      #   run: |
+      #     jq -c < tfplan.json > tfplanObj.json
+      #     jq . tfplanObj.json > tfplan-new.json
 
       - name: Scan with Checkov
         run: |
-          checkov -f tfplan-new.json -o junitxml > checkov-report.xml
+          checkov -f tfplan.json -o junitxml > checkov-report.xml
           
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results

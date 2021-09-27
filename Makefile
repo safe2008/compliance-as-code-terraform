@@ -1,12 +1,12 @@
 .PHONY: introduction
 introduction:
 	@echo "Checkov introduction"
-	checkov -d introduction
+	checkov -d introduction --skip-check CKV_AWS_144
 
-.PHONY: webapp
-webapp:
-	@echo "Checkov webapp"
-	checkov -d webapp
+.PHONY: eks
+eks:
+	@echo "Checkov k8s"
+	checkov -d eks
 
 .PHONY: k8s
 k8s:

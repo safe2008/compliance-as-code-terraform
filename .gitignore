@@ -1,12 +1,21 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
 .idea
 .external_modules
 checkov-report.xml
 .talismanrc
 .terraform
 .terraform.lock.hcl
-introduction/terraform.tfstate
-introduction/.terraform.tfstate.lock.info
-introduction/tfplan.binary
+eks/terraform.tfstate
+eks/.terraform.tfstate.lock.info
+eks/tfplan.binary
+eks/tfplan.json
+eks/tfplan-new.json
+eks/tfplanObt.json
 introduction/tfplan.json
-introduction/tfplan-new.json
-introduction/tfplanObt.json
+introduction/tfplan.binary
