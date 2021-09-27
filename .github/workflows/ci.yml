@@ -28,9 +28,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Scan with Checkov
+      - name: Install Checkov
         run: |
           pip install checkov
+
+      - name: Scan with Checkov
+        run: |
           checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
 
       - name: Upload results
