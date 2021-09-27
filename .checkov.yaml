@@ -12,3 +12,4 @@ skip-check:
 skip-fixes: false 
 skip-suppressions: true 
 soft-fail: true
+no-guide: false 
