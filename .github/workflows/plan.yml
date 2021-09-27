@@ -70,7 +70,11 @@ jobs:
           terraform version
 
       - name: Scan with Checkov
-        run: ./plan-introduction.sh
+        run: |
+          terraform -chdir=${{ github.event.inputs.directory }} init
+          terraform -chdir=${{ github.event.inputs.directory }} plan --out tfplan.binary
+          terraform -chdir=${{ github.event.inputs.directory }} show -json tfplan.binary > ${{ github.event.inputs.directory }}/tfplan.json
+          checkov -f ${{ github.event.inputs.directory }}/tfplan.json -o junitxml > checkov-report.xml
           
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
