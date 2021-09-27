@@ -39,31 +39,38 @@ jobs:
       - name: Checkov version
         run: checkov -v
 
-      - name: Terraform Setup
-        uses: hashicorp/setup-terraform@v1.3.2
-        with:
-          terraform_version: 1.0.5
+      # - name: Terraform Setup
+      #   uses: hashicorp/setup-terraform@v1.3.2
+      #   with:
+      #     terraform_version: 1.0.5
 
-      - name: Terraform Init
-        id: init
-        run: terraform init
+      # - name: Terraform Init
+      #   id: init
+      #   run: terraform init
 
-      - name: Terraform Plan
-        id: plan
-        run: terraform plan --out tfplan.binary
+      # - name: Terraform Plan
+      #   id: plan
+      #   run: terraform plan --out tfplan.binary
 
-      - name: Terraform Show
-        id: show
-        run: terraform show -json tfplan.binary > tfplan.json
+      # - name: Terraform Show
+      #   id: show
+      #   run: terraform show -json tfplan.binary > tfplan.json
 
-      # - name: Json format
+
+      # - name: Scan with Checkov
       #   run: |
-      #     jq -c < tfplan.json > tfplanObj.json
-      #     jq . tfplanObj.json > tfplan-new.json
+      #     checkov -f tfplan.json -o junitxml > checkov-report.xml
+
+      - name: Install terraform
+        run: |
+          wget https://releases.hashicorp.com/terraform/1.0.7/terraform_1.0.7_linux_amd64.zip
+          sudo apt install zip -y
+          sudo unzip terraform_1.0.7_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          terraform version
 
       - name: Scan with Checkov
-        run: |
-          checkov -f tfplan.json -o junitxml > checkov-report.xml
+        run: ./plan-introduction.sh
           
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
