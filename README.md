@@ -1,13 +1,12 @@
 # compliance-as-code-terraform
 
 ```shell
-## 1
-cd introduction
-terraform plan --out tfplan.binary
-terraform show -json tfplan.binary > tfplan.json
-checkov -f tfplan.json
+## None fix
+make introduction
+make plan
 
-## 2
-checkov -d introduction --soft-fail --download-external-modules true  --framework terraform  --output json
+## Fixed
+make introduction-solution
+make plan-solution
 
 ```

@@ -16,7 +16,7 @@ plan:
 	terraform -chdir=introduction show -json tfplan.binary > introduction/tfplan.json
 	checkov -f introduction/tfplan.json
 
-.PHONY: introduction-solution
+.PHONY: plan-solution
 plan-solution:
 	@echo "Checkov plan introduction-solution"
 	terraform -chdir=introduction-solution init
