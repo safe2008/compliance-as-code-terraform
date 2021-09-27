@@ -34,11 +34,11 @@ jobs:
 
       - name: Scan with Checkov
         run: |
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > ${{ github.event.inputs.directory }}/checkov-report.xml
+          checkov -d ${{ github.event.inputs.directory }} -o junitxml > ${{ github.event.inputs.directory }}/ci-report.xml
 
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
           name: test-results
-          path: ${{ github.event.inputs.directory }}/checkov-report.xml
+          path: ${{ github.event.inputs.directory }}/ci-report.xml

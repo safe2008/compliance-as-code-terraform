@@ -39,28 +39,6 @@ jobs:
       - name: Checkov version
         run: checkov -v
 
-      # - name: Terraform Setup
-      #   uses: hashicorp/setup-terraform@v1.3.2
-      #   with:
-      #     terraform_version: 1.0.5
-
-      # - name: Terraform Init
-      #   id: init
-      #   run: terraform init
-
-      # - name: Terraform Plan
-      #   id: plan
-      #   run: terraform plan --out tfplan.binary
-
-      # - name: Terraform Show
-      #   id: show
-      #   run: terraform show -json tfplan.binary > tfplan.json
-
-
-      # - name: Scan with Checkov
-      #   run: |
-      #     checkov -f tfplan.json -o junitxml > checkov-report.xml
-
       - name: Install terraform
         run: |
           curl -O https://releases.hashicorp.com/terraform/1.0.7/terraform_1.0.7_linux_amd64.zip
@@ -80,11 +58,11 @@ jobs:
   
       - name: Scan with Checkov
         run: |
-          checkov -f ${{ github.event.inputs.directory }}/tfplan.json  -o junitxml > ${{ github.event.inputs.directory }}/checkov-report.xml
+          checkov -f ${{ github.event.inputs.directory }}/tfplan.json  -o junitxml > ${{ github.event.inputs.directory }}/plan-report.xml
           
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
           name: test-results
-          path: ${{ github.event.inputs.directory }}/checkov-report.xml
+          path: ${{ github.event.inputs.directory }}/plan-report.xml
