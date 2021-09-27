@@ -20,10 +20,11 @@ jobs:
           directory: ${{ github.event.inputs.directory }}
           # check: CKV_AWS_1 # optional: run only a specific check_id. can be comma separated list
           skip_check: CKV2_AWS_6, CKV_AWS_144 # optional: skip a specific check_id. can be comma separated list
-          soft_fail: false
-          framework: all # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
+          soft_fail: true
+          framework: terraform # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
           output_format: cli
           quiet: false
           external_checks_dir: ./checkov
           download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
           log_level: DEBUG # optional: set log level. Default WARNING
+          

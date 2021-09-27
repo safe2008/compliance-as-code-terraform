@@ -34,7 +34,7 @@ jobs:
 
       - name: Scan with Checkov
         run: |
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
+          checkov -d ${{ github.event.inputs.directory }} -o junitxml > ${{ github.event.inputs.directory }}/checkov-report.xml
 
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
