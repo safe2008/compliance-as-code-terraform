@@ -35,6 +35,12 @@ jobs:
         run: |
           checkov -d ${{ github.event.inputs.directory }} -o junitxml > ${{ github.event.inputs.directory }}/ci-report.xml
 
+      - name: Publish Checkov scan result
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: ${{ github.event.inputs.directory }}/ci-report.xml
+
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
