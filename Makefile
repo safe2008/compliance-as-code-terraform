@@ -36,8 +36,3 @@ fmt:
 	@echo "fmt all"
 	terraform -chdir=introduction fmt
 	terraform -chdir=introduction-solution fmt
-
-.PHONY: eks
-eks:
-	@echo "Checkov k8s"
-	checkov -d eks
