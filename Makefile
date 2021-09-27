@@ -1,7 +1,7 @@
 .PHONY: introduction
 introduction:
 	@echo "Checkov introduction"
-	checkov -d introduction --skip-check CKV_AWS_144
+	checkov -d introduction
 
 .PHONY: eks
 eks:

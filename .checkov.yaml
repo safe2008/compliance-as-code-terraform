@@ -1,8 +1,20 @@
-download-external-modules: true
-evaluate-variables: true
-external-modules-download-path:
-framework: all
-output: cli
-skip-fixes: true
-soft-fail: true
+branch: main
 compact: true
+directory:
+  - test-dir
+docker-image: sample-image
+dockerfile-path: Dockerfile
+download-external-modules: true 
+evaluate-variables: true 
+external-modules-download-path: .external_modules 
+framework: all 
+no-guide: true 
+output: cli 
+quiet: true 
+skip-check: 
+  - CKV2_AWS_6
+  - CKV_AWS_144
+skip-fixes: true 
+skip-framework: dockerfile 
+skip-suppressions: true 
+soft-fail: true
