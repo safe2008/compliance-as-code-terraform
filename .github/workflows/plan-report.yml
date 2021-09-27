@@ -1,38 +1,36 @@
-name: "Plan Report"
-on:
-  workflow_run:
-    workflows: ["PLAN"] # runs after PLAN workflow
-    types:
-      - completed
-jobs:
-  report:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download and Extract Artifacts
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          mkdir -p plan-plan-artifacts && cd plan-plan-artifacts
+# name: "Plan Report"
+# on:
+#   workflow_run:
+#     workflows: ["PLAN"] # runs after PLAN workflow
+#     types:
+#       - completed
+# jobs:
+#   report:
+#     runs-on: ubuntu-latest
+#     steps:
+#       # - name: Download and Extract Artifacts
+#       #   env:
+#       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#       #   run: |
+#       #     mkdir -p plan-plan-artifacts && cd plan-plan-artifacts
 
-          artifacts_url=${{ github.event.workflow_run.artifacts_url }}
+#       #     artifacts_url=${{ github.event.workflow_run.artifacts_url }}
 
-          gh api "$artifacts_url" -q '.plan-artifacts[] | [.name, .archive_download_url] | @tsv' | while read artifact
-          do
-            IFS=$'\t' read name url <<< "$artifact"
-            gh api $url > "$name.zip"
-            unzip -d "$name" "$name.zip"
-          done
+#       #     gh api "$artifacts_url" -q '.plan-artifacts[] | [.name, .archive_download_url] | @tsv' | while read artifact
+#       #     do
+#       #       IFS=$'\t' read name url <<< "$artifact"
+#       #       gh api $url > "$name.zip"
+#       #       unzip -d "$name" "$name.zip"
+#       #     done
+#       - name: Download Artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           path: plan-results
 
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        with:
-          commit: ${{ github.event.workflow_run.head_sha }}
-          event_file: plan-artifacts/Event File/event.json
-          event_name: ${{ github.event.workflow_run.event }}
-          files: "plan-artifacts/**/*.xml"
-
-      # - name: JUnit Report Action
-      #   uses: mikepenz/action-junit-report@v2.4.5
-      #   if: always() # always run even if the previous step fails
-      #   with:
-      #     report_paths: "plan-artifacts/**/*.xml"
+#       - name: Publish Unit Test Results
+#         uses: EnricoMi/publish-unit-test-result-action@v1
+#         with:
+#           commit: ${{ github.event.workflow_run.head_sha }}
+#           event_file: plan-artifacts/Event File/event.json
+#           event_name: ${{ github.event.workflow_run.event }}
+#           files: "plan-artifacts/**/*.xml"

@@ -59,6 +59,12 @@ jobs:
       - name: Scan with Checkov
         run: |
           checkov -f ${{ github.event.inputs.directory }}/tfplan.json  -o junitxml > ${{ github.event.inputs.directory }}/plan-report.xml
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: ${{ github.event.inputs.directory }}/plan-report.xml
           
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
