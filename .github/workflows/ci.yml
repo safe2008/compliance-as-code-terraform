@@ -27,18 +27,17 @@ jobs:
         uses: actions/setup-python@v2.2.2
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install Checkov
         run: |
           pip install checkov
-
+          
       - name: Scan with Checkov
         run: |
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > ${{ github.event.inputs.directory }}/ci-report.xml
+          checkov -d ${{ github.event.inputs.directory }} -o junitxml > checkov-report.xml
 
       - name: Upload results
         uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
           name: test-results
-          path: ${{ github.event.inputs.directory }}/ci-report.xml
+          path: checkov-report.xml
