@@ -21,3 +21,6 @@ introduction/tfplan.json
 introduction/tfplan.binary
 introduction/ci-report.xml
 introduction-solution/plan-report.xml
+introduction/plan-report.xml
+introduction-solution/tfplan.binary
+introduction-solution/tfplan.json
