@@ -41,7 +41,7 @@ jobs:
       - name: Scan with Checkov
         run: |
           docker run --volume `pwd`/${{ github.event.inputs.directory }}:/${{ github.event.inputs.directory }} bridgecrew/checkov \
-            -f ${{ github.event.inputs.directory }}/tfplan.json ${{ github.event.inputs.directory }}/.checkov.yaml \
+            -f ${{ github.event.inputs.directory }}/tfplan.json --config-file ${{ github.event.inputs.directory }}/.checkov.yaml \
             --output junitxml > `pwd`/${{ github.event.inputs.directory }}/plan-report.xml
 
       - name: Delete docker process
