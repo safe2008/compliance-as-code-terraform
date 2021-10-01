@@ -31,9 +31,9 @@ jobs:
         with:
           files: ${{ github.event.inputs.directory }}/ci-${{ github.event.inputs.directory }}-report.xml
 
-      - name: Upload results
-        uses: actions/upload-artifact@v2  # upload test results
-        if: success() || failure()        # run this step even if previous step failed
-        with:
-          name: ci-${{ github.event.inputs.directory }}-results
-          path: ${{ github.event.inputs.directory }}/ci-${{ github.event.inputs.directory }}-report.xml
+      # - name: Upload results
+      #   uses: actions/upload-artifact@v2  # upload test results
+      #   if: success() || failure()        # run this step even if previous step failed
+      #   with:
+      #     name: ci-${{ github.event.inputs.directory }}-results
+      #     path: ${{ github.event.inputs.directory }}/ci-${{ github.event.inputs.directory }}-report.xml
