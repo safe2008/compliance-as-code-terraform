@@ -17,35 +17,21 @@ jobs:
   build-test:
     name: Build & Test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.7]
+    # strategy:
+    #   matrix:
+    #     python-version: [3.7]
     steps:
       - uses: actions/checkout@v2.3.4
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2.2.2
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - uses: actions/cache@v2
-        with:
-          path: ${{ env.pythonLocation }}
-          key: ${{ env.pythonLocation }}-${{ hashFiles('setup.py') }}-${{ hashFiles('dev-requirements.txt') }}
-
-
-      - name: Install Checkov
-        run: |
-          pip install checkov
-
-      - name: Checkov config
-        run: |
-          checkov -v
-          checkov --show-config
-          
       - name: Scan with Checkov
         run: |
-          checkov -d ${{ github.event.inputs.directory }} -o junitxml > ${{ github.event.inputs.directory }}/ci-report.xml
+          docker run --volume `pwd`/${{ github.event.inputs.directory }}:/${{ github.event.inputs.directory }} bridgecrew/checkov \
+            --directory /${{ github.event.inputs.directory }} --output junitxml > `pwd`/${{ github.event.inputs.directory }}/ci-report.xml
+
+      - name: Delete docker process
+        run: |
+          docker stop $(docker ps -a -q)
+          docker rm $(docker ps -a -q)
 
       - name: Publish Checkov scan result
         uses: EnricoMi/publish-unit-test-result-action@v1
