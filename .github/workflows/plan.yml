@@ -11,13 +11,6 @@ jobs:
   plan-scan:
     name: Plan scan
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     python-version: [3.7]
-    # defaults:
-    #   run:
-    #     shell: bash
-    #     working-directory: ${{ github.event.inputs.directory }}
     steps:
       - uses: actions/checkout@v2.3.4
 
@@ -48,7 +41,8 @@ jobs:
       - name: Scan with Checkov
         run: |
           docker run --volume `pwd`/${{ github.event.inputs.directory }}:/${{ github.event.inputs.directory }} bridgecrew/checkov \
-            --directory /${{ github.event.inputs.directory }} --output junitxml > `pwd`/${{ github.event.inputs.directory }}/plan-report.xml
+            -f ${{ github.event.inputs.directory }}/tfplan.json ${{ github.event.inputs.directory }}/.checkov.yaml \
+            --output junitxml > `pwd`/${{ github.event.inputs.directory }}/plan-report.xml
 
       - name: Delete docker process
         run: |
