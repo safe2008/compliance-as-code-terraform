@@ -19,3 +19,5 @@ eks/tfplan-new.json
 eks/tfplanObt.json
 introduction/tfplan.json
 introduction/tfplan.binary
+introduction/ci-report.xml
+introduction-solution/plan-report.xml

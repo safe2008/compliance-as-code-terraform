@@ -1,12 +1,14 @@
 .PHONY: introduction
 introduction: clear
 	@echo "Checkov introduction"
-	checkov -d introduction
+	docker pull bridgecrew/checkov
+	docker run --tty -v `pwd`/introduction:/introduction bridgecrew/checkov --directory /introduction
 
 .PHONY: introduction-solution
 introduction-solution: clear
 	@echo "Checkov introduction-solution"
-	checkov -d introduction-solution
+	docker pull bridgecrew/checkov
+	docker run --tty -v `pwd`/introduction-solution:/introduction-solution bridgecrew/checkov --directory /introduction-solution
 
 .PHONY: plan
 plan:
