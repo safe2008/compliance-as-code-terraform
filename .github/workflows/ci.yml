@@ -26,7 +26,7 @@ jobs:
           docker rm $(docker ps -a -q)
 
       - name: Publish Checkov scan result
-        uses: EnricoMi/publish-unit-test-result-action@v1.22
+        uses: EnricoMi/publish-unit-test-result-action@master
         if: always()
         with:
           files: ${{ github.event.inputs.directory }}/ci-${{ github.event.inputs.directory }}-report.xml
