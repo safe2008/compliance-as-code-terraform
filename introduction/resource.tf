@@ -16,11 +16,15 @@ data "aws_s3_bucket" "logging" {
 }
 
 resource "aws_s3_bucket" "data" {
-  bucket = "bucket-launched-using-terrafrom-20210106"
+  bucket = "bucket-launched-using-terrafrom-20211006"
   acl    = "private" # or can be "public-read"
   tags = {
     Name        = "Bucket"
     Environment = "Production"
   }
+  versioning {
+    enabled = true
+  }
+
 }
 
