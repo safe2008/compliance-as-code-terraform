@@ -36,8 +36,10 @@ jobs:
       - name: Install Checkov
         run: pip install checkov
 
-      - name: Checkov version
-        run: checkov -v
+      - name: Checkov config
+        run: |
+          checkov -v
+          checkov --show-config
 
       - name: Install terraform
         run: |
