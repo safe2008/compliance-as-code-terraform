@@ -23,13 +23,6 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: Scan with Checkov
-        run: |
-          cat .github/template.md > README.md && \
-          docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
-            -d /introduction --config-file introduction/.checkov.yaml \
-            -o github_failed_only -s >> README.md
-
       - name: Update documentation
         run: |
           git config --local user.email "action@github.com"
@@ -45,7 +38,7 @@ jobs:
           docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
             -d /introduction --config-file introduction/.checkov.yaml \
             -o github_failed_only -s >> README.md
-            
+
           # pip install -U checkov
           # cat .github/template.md > README.md && checkov -d introduction -o github_failed_only -s >> README.md
 
