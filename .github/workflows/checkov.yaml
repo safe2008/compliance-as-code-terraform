@@ -22,7 +22,13 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
-            
+
+      - name: Scan with Checkov
+        run: |
+          docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
+            -d /introduction --config-file introduction/.checkov.yaml \
+            -o github_failed_only -s >> README.md
+
       - name: Update documentation
         run: |
           git config --local user.email "action@github.com"
@@ -33,12 +39,8 @@ jobs:
           echo "latest tag: $latest_tag"
           new_tag=$(echo $latest_tag | awk -F. -v a="$1" -v b="$2" -v c="$3" '{printf("%d.%d.%d", $1+a, $2+b , $3+1)}')
           echo "new tag: $new_tag"
-
-          docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
-            -d /introduction --config-file introduction/.checkov.yaml \
-            -o github_failed_only -s >> README.md
             
-          # pip install -U checkov
+          pip install -U checkov
           # cat .github/template.md > README.md && checkov -d introduction -o github_failed_only -s >> README.md
 
           git add README.md  || echo "No changes to commit"
