@@ -10,3 +10,7 @@ make introduction-solution
 make plan-solution
 
 ```
+## Existing vulnerabilities (Auto-Generated)
+|
+
+
