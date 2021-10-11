@@ -11,6 +11,3 @@ make plan-solution
 
 ```
 ## Existing vulnerabilities (Auto-Generated)
-|
-
-
