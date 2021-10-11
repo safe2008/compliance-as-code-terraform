@@ -35,7 +35,7 @@ jobs:
           echo "new tag: $new_tag"
 
           docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
-            -d introduction--config-file introduction/.checkov.yaml \
+            -d introduction --config-file introduction/.checkov.yaml \
             -o github_failed_only -s >> README.md
 
           # pip install -U checkov
