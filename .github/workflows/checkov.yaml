@@ -18,32 +18,55 @@ jobs:
       - name: Commit tag changes
         uses: stefanzweifel/git-auto-commit-action@v4
 
-      # - name: Set up Python ${{ matrix.python-version }}
-      #   uses: actions/setup-python@v1
-      #   with:
-      #     python-version: 3.7
-
-      - name: Update documentation
+      - name: Checkov Scan
+        id: checkov
+        if: github.event_name == 'pull_request'
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git fetch --tags
-          git pull
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "latest tag: $latest_tag"
-          new_tag=$(echo $latest_tag | awk -F. -v a="$1" -v b="$2" -v c="$3" '{printf("%d.%d.%d", $1+a, $2+b , $3+1)}')
-          echo "new tag: $new_tag"
-
           docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
             -d introduction --config-file introduction/.checkov.yaml \
-            -o github_failed_only -s >> README.md
+            -o github_failed_only
 
-          # pip install -U checkov
-          # cat .github/template.md > README.md && checkov -d introduction -o github_failed_only -s >> README.md
+      - name: "Run - Checkov Comment"
+        if: github.event_name == 'pull_request' && ${{ steps.checkov.outputs.stdout }} != ''
+        uses: actions/github-script@v3.1.0
+        env:
+            RESULT: "terraform\n${{ steps.checkov.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = 
+            <details><summary>Checkov scan</summary>
+            \`\`\`${process.env.RESULT}\`\`\`
+            </details>
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+            github.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: output
+            })
+            
+      # - name: Update documentation
+      #   run: |
+      #     git config --local user.email "action@github.com"
+      #     git config --local user.name "GitHub Action"
+      #     git fetch --tags
+      #     git pull
+      #     latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+      #     echo "latest tag: $latest_tag"
+      #     new_tag=$(echo $latest_tag | awk -F. -v a="$1" -v b="$2" -v c="$3" '{printf("%d.%d.%d", $1+a, $2+b , $3+1)}')
+      #     echo "new tag: $new_tag"
 
-          git add README.md  || echo "No changes to commit"
-          git commit -m "update resource scan result doc" README.md || echo "No changes to commit"
-          git push origin
-          git tag $new_tag
-          git push origin $new_tag
+      #     docker run -v `pwd`/introduction:/introduction bridgecrew/checkov \
+      #       -d introduction --config-file introduction/.checkov.yaml \
+      #       -o github_failed_only -s >> README.md
+
+      #     # pip install -U checkov
+      #     # cat .github/template.md > README.md && checkov -d introduction -o github_failed_only -s >> README.md
+
+      #     git add README.md  || echo "No changes to commit"
+      #     git commit -m "update resource scan result doc" README.md || echo "No changes to commit"
+      #     git push origin
+      #     git tag $new_tag
+      #     git push origin $new_tag
   
