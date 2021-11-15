@@ -24,6 +24,7 @@ jobs:
             -o github_failed_only -s >> README.md
             
       - name: Create Issue From File
+        id: ciff
         uses: peter-evans/create-issue-from-file@v3
         with:
           title: Checkov Scan
