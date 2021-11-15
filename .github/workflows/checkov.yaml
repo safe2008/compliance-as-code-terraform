@@ -36,7 +36,7 @@ jobs:
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
-          project-name: My project
+          project-name: Compliance as code terraform
           column-name: My column
           issue-number: ${{ steps.ciff.outputs.issue-number }}
 
@@ -45,7 +45,7 @@ jobs:
 
       # - name: Commit tag changes
       #   uses: stefanzweifel/git-auto-commit-action@v4
-      
+
       # - name: Update documentation
       #   run: |
       #     git config --local user.email "action@github.com"
