@@ -15,12 +15,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Run yor action
-        uses: bridgecrewio/yor-action@main
-
-      - name: Commit tag changes
-        uses: stefanzweifel/git-auto-commit-action@v4
-
       - name: Checkov Scan
         id: checkov
         if: github.event_name == 'pull_request'
@@ -37,8 +31,21 @@ jobs:
           labels: |
             report
             automated issue
+          assignees: safe2008
 
-            
+      - name: Create or Update Project Card
+        uses: peter-evans/create-or-update-project-card@v1
+        with:
+          project-name: My project
+          column-name: My column
+          issue-number: ${{ steps.ciff.outputs.issue-number }}
+
+      # - name: Run yor action
+      #   uses: bridgecrewio/yor-action@main
+
+      # - name: Commit tag changes
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      
       # - name: Update documentation
       #   run: |
       #     git config --local user.email "action@github.com"
