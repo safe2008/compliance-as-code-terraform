@@ -34,12 +34,12 @@ jobs:
             automated issue
           assignees: safe2008
 
-      - name: Create or Update Project Card
-        uses: peter-evans/create-or-update-project-card@v1
-        with:
-          project-name: Compliance as code terraform
-          column-name: My column
-          issue-number: ${{ steps.ciff.outputs.issue-number }}
+      # - name: Create or Update Project Card
+      #   uses: peter-evans/create-or-update-project-card@v1
+      #   with:
+      #     project-name: Compliance as code terraform
+      #     column-name: My column
+      #     issue-number: ${{ steps.ciff.outputs.issue-number }}
 
       # - name: Run yor action
       #   uses: bridgecrewio/yor-action@main
