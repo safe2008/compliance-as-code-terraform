@@ -33,12 +33,15 @@ jobs:
         if: github.event_name == 'pull_request' && ${{ steps.checkov.outputs.stdout }} != ''
         uses: actions/github-script@v3.1.0
         env:
-            RESULT: "terraform\n${{ steps.checkov.outputs.stdout }}"
+            RESULT: "checkov\n${{ steps.checkov.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = 
-            <details><summary>Checkov scan</summary>
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
             \`\`\`${process.env.RESULT}\`\`\`
             </details>
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
