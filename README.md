@@ -1,1 +1,1 @@
-## Existing vulnerabilities (Auto-Generated)
+## Existing vulnerabilities
